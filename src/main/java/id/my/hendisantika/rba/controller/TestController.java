@@ -29,4 +29,10 @@ public class TestController {
         log.info("test {}", SecurityContextHolder.getContext().getAuthentication());
         return SecurityContextHolder.getContext().getAuthentication();
     }
+
+    @GetMapping("/noRoleNeeded")
+    public String publicResource() {
+        log.info("This resource only requires authentication");
+        return "This resource only requires authentication";
+    }
 }
