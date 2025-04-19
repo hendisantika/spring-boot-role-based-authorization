@@ -35,4 +35,11 @@ public class TestController {
         log.info("This resource only requires authentication");
         return "This resource only requires authentication";
     }
+
+    @GetMapping("/roleNeeded")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String privateResource() {
+        log.info("This resource requires the ADMIN role");
+        return "This resource requires the ADMIN role";
+    }
 }
