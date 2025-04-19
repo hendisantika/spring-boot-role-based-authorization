@@ -15,4 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * To change this template use File | Settings | File Templates.
  */
 public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findByName(String name);
 }
