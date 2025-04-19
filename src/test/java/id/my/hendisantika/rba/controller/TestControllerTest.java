@@ -27,6 +27,7 @@ class TestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    // Tests for /test endpoint (requires ADMIN role)
     @Test
     @WithMockUser(authorities = "ADMIN")
     void getAuthenticatedUser_AdminRole_Success() throws Exception {
@@ -51,6 +52,51 @@ class TestControllerTest {
     @Test
     void getAuthenticatedUser_UnauthenticatedUser_AccessDenied() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/test"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    // Tests for /noRoleNeeded endpoint (requires only authentication)
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void publicResource_AdminRole_Success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/noRoleNeeded"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("This resource only requires authentication"));
+    }
+
+    @Test
+    @WithMockUser(authorities = "USER")
+    void publicResource_UserRole_Success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/noRoleNeeded"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("This resource only requires authentication"));
+    }
+
+    @Test
+    void publicResource_UnauthenticatedUser_AccessDenied() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/noRoleNeeded"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    // Tests for /roleNeeded endpoint (requires ADMIN role)
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void privateResource_AdminRole_Success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/roleNeeded"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("This resource requires the ADMIN role"));
+    }
+
+    @Test
+    @WithMockUser(authorities = "USER")
+    void privateResource_UserRole_AccessDenied() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/roleNeeded"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    void privateResource_UnauthenticatedUser_AccessDenied() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/roleNeeded"))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 }
