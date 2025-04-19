@@ -1,0 +1,90 @@
+### RBAC (Role-Based Access Control) Test Cases
+
+## This file contains HTTP requests to test the role-based access control functionality
+## of the Spring Boot application. It demonstrates various authentication and authorization
+## scenarios using different users and endpoints.
+
+### 1. Authentication Tests
+
+## 1.1 Basic Authentication with Admin User
+GET http://localhost:8080/test
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+
+### 1.2 Basic Authentication with Regular User
+GET http://localhost:8080/noRoleNeeded
+Authorization: Basic dXNlcjp1c2VyMTIz
+
+### 1.3 Form Login - Admin User
+POST http://localhost:8080/login
+Content-Type: application/x-www-form-urlencoded
+
+username = admin &
+password = admin123
+
+### 1.4 Form Login - Regular User
+POST http://localhost:8080/login
+Content-Type: application/x-www-form-urlencoded
+
+username = user &
+password = user123
+
+### 2. Authorization Tests - Admin User
+
+## 2.1 Access endpoint requiring ADMIN role (should succeed)
+GET http://localhost:8080/test
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+
+## 2.2 Access endpoint requiring only authentication (should succeed)
+GET http://localhost:8080/noRoleNeeded
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+
+## 2.3 Access another endpoint requiring ADMIN role (should succeed)
+GET http://localhost:8080/roleNeeded
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+
+### 3. Authorization Tests - Regular User
+
+## 3.1 Access endpoint requiring ADMIN role (should fail with 403 Forbidden)
+GET http://localhost:8080/test
+Authorization: Basic dXNlcjp1c2VyMTIz
+
+## 3.2 Access endpoint requiring only authentication (should succeed)
+GET http://localhost:8080/noRoleNeeded
+Authorization: Basic dXNlcjp1c2VyMTIz
+
+## 3.3 Access another endpoint requiring ADMIN role (should fail with 403 Forbidden)
+GET http://localhost:8080/roleNeeded
+Authorization: Basic dXNlcjp1c2VyMTIz
+
+### 4. Unauthorized Access Tests
+
+## 4.1 Access protected endpoint without authentication (should fail with 401 Unauthorized)
+GET http://localhost:8080/test
+
+## 4.2 Access endpoint requiring only authentication without credentials (should fail with 401 Unauthorized)
+GET http://localhost:8080/noRoleNeeded
+
+## 4.3 Access endpoint requiring ADMIN role without authentication (should fail with 401 Unauthorized)
+GET http://localhost:8080/roleNeeded
+
+### 5. Invalid Credentials Tests
+
+## 5.1 Attempt login with incorrect password (should fail)
+POST http://localhost:8080/login
+Content-Type: application/x-www-form-urlencoded
+
+username = admin &
+password = wrongpassword
+
+## 5.2 Attempt Basic Auth with incorrect credentials (should fail)
+GET http://localhost:8080/test
+Authorization: Basic YWRtaW46d3JvbmdwYXNzd29yZA==
+
+### 6. Additional Tests
+
+## 6.1 H2 Console Access (should be accessible without authentication as configured in SecurityConfig)
+GET http://localhost:8080/h2-console
+
+## 6.2 Test with mixed-case username (to test case sensitivity)
+GET http://localhost:8080/noRoleNeeded
+Authorization: Basic QWRtaW46YWRtaW4xMjM=
