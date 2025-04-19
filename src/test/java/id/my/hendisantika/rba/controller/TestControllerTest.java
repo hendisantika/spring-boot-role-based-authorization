@@ -47,4 +47,10 @@ class TestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/test"))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
+
+    @Test
+    void getAuthenticatedUser_UnauthenticatedUser_AccessDenied() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/test"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
 }
