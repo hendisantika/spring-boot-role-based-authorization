@@ -2,11 +2,9 @@ package id.my.hendisantika.rba.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,8 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,28 +21,20 @@ import java.util.Set;
  * Email: hendisantika@yahoo.co.id
  * Telegram : @hendisantika34
  * Date: 19/04/25
- * Time: 10.08
+ * Time: 10.09
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name = "users")
+@Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class User implements Serializable {
-
+public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles = new HashSet<>();
-
-    private boolean enabled;
+    private String name;
 }
