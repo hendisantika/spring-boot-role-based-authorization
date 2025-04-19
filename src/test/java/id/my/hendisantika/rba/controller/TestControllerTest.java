@@ -37,4 +37,14 @@ class TestControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(auth));
     }
+
+    @Test
+    @WithMockUser(authorities = "USER")
+    void getAuthenticatedUser_UserRole_AccessDenied() throws Exception {
+        Authentication authentication = new TestingAuthenticationToken("user", "password", "USER");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/test"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
 }
