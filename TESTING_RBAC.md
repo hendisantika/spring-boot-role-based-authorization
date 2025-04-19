@@ -25,7 +25,35 @@ The application initializes with two test users:
 
 ## Testing Methods
 
-### 1. Using Automated Tests
+### 1. Using rbac.http File
+
+The application includes an `rbac.http` file in the `src/main/resources` directory that contains predefined HTTP
+requests for testing RBAC functionality. This is the most convenient way to test if you're using IntelliJ IDEA or VS
+Code with the appropriate plugins.
+
+To use the rbac.http file:
+
+#### In IntelliJ IDEA:
+
+1. Open the file `src/main/resources/rbac.http`
+2. Click the green "Run" button next to each request
+3. View the response in the "Response" tab
+
+#### In VS Code:
+
+1. Install the "REST Client" extension
+2. Open the file `src/main/resources/rbac.http`
+3. Click "Send Request" above each request
+4. View the response in the response panel
+
+The rbac.http file includes tests for:
+
+- Authentication with both Basic Auth and Form Login
+- Authorization with different roles
+- Unauthorized access scenarios
+- Invalid credentials
+
+### 2. Using Automated Tests
 
 The application includes JUnit tests that verify RBAC functionality. These tests use Spring Security's testing support
 to simulate authenticated users with different roles.
