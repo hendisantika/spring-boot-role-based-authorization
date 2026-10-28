@@ -2,7 +2,7 @@ package id.my.hendisantika.rba.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +36,7 @@ class TestControllerTest {
         String auth = "{\"authorities\":[{\"authority\":\"ADMIN\"}],\"details\":null,\"authenticated\":true,\"credentials\":\"password\",\"principal\":\"user\",\"name\":\"user\"}";
         mockMvc.perform(MockMvcRequestBuilders.get("/test"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(auth));
+                .andExpect(MockMvcResultMatchers.content().json(auth));
     }
 
     @Test
