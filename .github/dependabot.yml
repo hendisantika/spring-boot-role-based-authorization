@@ -2,15 +2,54 @@ version: 2
 updates:
   - package-ecosystem: maven
     directory: "/"
+    target-branch: main
     schedule:
       interval: daily
       time: '05:00'
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
+    assignees:
+      - hendisantika
+    labels:
+      - dependencies
+      - java
+    commit-message:
+      prefix: "build"
+      prefix-development: "build"
+      include: scope
+    groups:
+      # Spring Boot parent & starters move together
+      spring-boot:
+        patterns:
+          - "org.springframework.boot*"
+      spring:
+        patterns:
+          - "org.springframework*"
+        exclude-patterns:
+          - "org.springframework.boot*"
+      # Batch remaining minor/patch bumps into one PR
+      maven-minor-patch:
+        update-types:
+          - minor
+          - patch
+
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: main
     schedule:
       interval: "daily"
       time: '05:00'
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
+    assignees:
+      - hendisantika
+    labels:
+      - dependencies
+      - github_actions
+    commit-message:
+      prefix: "ci"
+      include: scope
+    groups:
+      github-actions:
+        patterns:
+          - "*"
