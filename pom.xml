@@ -14,7 +14,7 @@
     <name>spring-boot-role-based-authorization</name>
     <description>spring-boot-role-based-authorization</description>
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <dependency>
